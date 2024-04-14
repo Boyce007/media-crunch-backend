@@ -1,5 +1,6 @@
 package com.backend.mediacrunchbackend.domain.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,6 +22,8 @@ public class Media {
     private String title;
     private List<Double> ratings;
     private Date releaseDate;
+
+    @JsonProperty("Genre")
     private Genre genre;
 
 

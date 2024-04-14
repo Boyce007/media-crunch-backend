@@ -40,7 +40,7 @@ public class MediaService {
         return mediaRepo.save(media);
     }
 
-    private Media getById(Long id) {
+    public Media getById(Long id) {
         Optional<Media>  media=  mediaRepo.findById(id);
         if(media.isEmpty()) {
             throw new ResourceNotFoundException("No media with id: " + id );
@@ -48,15 +48,14 @@ public class MediaService {
         return media.get();
     }
 
-    private List<Media> getAll() {
+    public List<Media> getAll() {
         return mediaRepo.findAll();
     }
 
-    private List<Media> getAllByGenre(String genreName) {
+    public List<Media> getAllByGenre(String genreName) {
         Genre genre  = Genre.valueOf(genreName);
-        List<Media> mediaByGenre = mediaRepo.findByGenre(genre);
 
-        return mediaByGenre;
+        return mediaRepo.findByGenre(genre);
 
     }
 
