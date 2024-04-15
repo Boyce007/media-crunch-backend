@@ -21,11 +21,18 @@ public class Media {
     private Long id;
     private String title;
     private List<Double> ratings;
+    @JsonProperty("releaseDate")
     private Date releaseDate;
 
     @JsonProperty("Genre")
     private Genre genre;
 
+
+    public Media(String title, List<Double> ratings, Genre genre) {
+        this.title = title;
+        this.ratings = ratings;
+        this.genre = genre;
+    }
 
     public void addRating(double rating) {
         ratings.add(rating);

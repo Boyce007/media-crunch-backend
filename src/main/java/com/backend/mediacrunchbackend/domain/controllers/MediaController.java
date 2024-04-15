@@ -25,14 +25,14 @@ public class MediaController {
     public Media create(@RequestBody Media media) {
         return mediaService.create(media);
     }
-    @GetMapping("{id}/media")
+    @GetMapping(value = "{id}/")
     public Media getMediaById(@PathVariable Long id) {
         return mediaService.getById(id);
     }
 
 
 
-    @GetMapping("/{id}/rating")
+    @GetMapping(value = "/{id}/rating")
     public Double getRating(@PathVariable Long id) {
         return mediaService.getRating(id);
 
@@ -43,7 +43,7 @@ public class MediaController {
         return mediaService.getAll();
     }
 
-    @GetMapping("{genre}")
+    @GetMapping(value ="/{genre}")
     public ResponseEntity<List<Media> > getALlByGenre(@PathVariable String genre) {
         try {
             List<Media> mediaByGenre = mediaService.getAllByGenre(genre);
@@ -51,8 +51,18 @@ public class MediaController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
     }
+
+    @GetMapping(value = "/{title}")
+    public ResponseEntity<Media> getByTitle(@PathVariable String title) {
+        try {
+            Media media = mediaService.getByTitle(title);
+            return new ResponseEntity<>(media,HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 
 
 

@@ -53,9 +53,17 @@ public class MediaService {
     }
 
     public List<Media> getAllByGenre(String genreName) {
+        genreName = genreName.toUpperCase();
         Genre genre  = Genre.valueOf(genreName);
-
         return mediaRepo.findByGenre(genre);
+    }
+
+    public Media getByTitle(String title) {
+        Optional<Media> media = mediaRepo.findByTitle(title);
+        if(media.isEmpty()) {
+            throw new ResourceNotFoundException("No title with: " +title);
+        }
+        return media.get();
 
     }
 
