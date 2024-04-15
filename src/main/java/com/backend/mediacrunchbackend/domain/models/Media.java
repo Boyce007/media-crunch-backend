@@ -21,7 +21,7 @@ public class Media {
     private Long id;
     private String title;
     private List<Double> ratings;
-    @JsonProperty("releaseDate")
+
     private Date releaseDate;
 
     @JsonProperty("Genre")

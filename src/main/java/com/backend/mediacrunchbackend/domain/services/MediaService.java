@@ -6,6 +6,7 @@ import com.backend.mediacrunchbackend.domain.models.Media;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,13 +25,16 @@ public class MediaService {
         return mediaRepo.save(media);
     }
 
-    public Double getRating(Long id) {
+    public String getRating(Long id) {
         Media media = getById(id);
         Double avg = 0.0;
         for (Double rating: media.getRatings()) {
             avg+=rating;
         }
-        return avg/media.getRatings().size();
+
+        avg = avg/media.getRatings().size();
+
+        return String.format("%.2g%n",avg);
 
 
     }

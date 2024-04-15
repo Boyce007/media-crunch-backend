@@ -33,7 +33,7 @@ public class MediaController {
 
 
     @GetMapping(value = "/{id}/rating")
-    public Double getRating(@PathVariable Long id) {
+    public String getRating(@PathVariable Long id) {
         return mediaService.getRating(id);
 
     }
@@ -43,7 +43,7 @@ public class MediaController {
         return mediaService.getAll();
     }
 
-    @GetMapping(value ="/{genre}")
+    @GetMapping(value ="/genre/{genre}")
     public ResponseEntity<List<Media> > getALlByGenre(@PathVariable String genre) {
         try {
             List<Media> mediaByGenre = mediaService.getAllByGenre(genre);
@@ -53,14 +53,25 @@ public class MediaController {
         }
     }
 
-    @GetMapping(value = "/{title}")
-    public ResponseEntity<Media> getByTitle(@PathVariable String title) {
+    @GetMapping(value = "/title/{title}")
+    public ResponseEntity<Media>  getByTitle(@PathVariable String title) {
         try {
             Media media = mediaService.getByTitle(title);
             return new ResponseEntity<>(media,HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PutMapping(value = "{id}/rating/{rating}")
+    public ResponseEntity<Boolean> addARating(@PathVariable Long id,@PathVariable Double rating) {
+        try {
+            mediaService.addRating(rating, id);
+            return new ResponseEntity<>(true,HttpStatus.OK);
+        } catch (Exception e ) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
     }
 
 
