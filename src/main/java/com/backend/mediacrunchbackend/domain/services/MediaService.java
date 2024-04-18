@@ -3,6 +3,7 @@ package com.backend.mediacrunchbackend.domain.services;
 import com.backend.mediacrunchbackend.domain.exceptions.ResourceNotFoundException;
 import com.backend.mediacrunchbackend.domain.models.Genre;
 import com.backend.mediacrunchbackend.domain.models.Media;
+import com.backend.mediacrunchbackend.domain.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,6 +70,12 @@ public class MediaService {
         }
         return media.get();
 
+    }
+
+    public void addToUserAdded(User user,Long id) {
+        Media media = getById(id);
+        media.getAddedToWatchList().add(user);
+        mediaRepo.save(media);
     }
 
 }

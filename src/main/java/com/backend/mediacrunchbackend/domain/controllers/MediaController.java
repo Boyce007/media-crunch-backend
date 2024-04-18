@@ -25,7 +25,7 @@ public class MediaController {
     public Media create(@RequestBody Media media) {
         return mediaService.create(media);
     }
-    @GetMapping(value = "{id}/")
+    @GetMapping(value = "/id/{id}")
     public Media getMediaById(@PathVariable Long id) {
         return mediaService.getById(id);
     }
