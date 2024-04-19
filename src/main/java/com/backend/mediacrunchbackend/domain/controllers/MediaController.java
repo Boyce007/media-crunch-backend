@@ -1,6 +1,7 @@
 package com.backend.mediacrunchbackend.domain.controllers;
 
 import com.backend.mediacrunchbackend.domain.models.Media;
+import com.backend.mediacrunchbackend.domain.models.Rating;
 import com.backend.mediacrunchbackend.domain.services.MediaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -62,20 +63,5 @@ public class MediaController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-    @PutMapping(value = "{id}/rating/{rating}")
-    public ResponseEntity<Boolean> addARating(@PathVariable Long id,@PathVariable Double rating) {
-        try {
-            mediaService.addRating(rating, id);
-            return new ResponseEntity<>(true,HttpStatus.OK);
-        } catch (Exception e ) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-    }
-
-
-
-
 
 }

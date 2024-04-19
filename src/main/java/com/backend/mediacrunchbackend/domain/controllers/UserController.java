@@ -1,6 +1,9 @@
 package com.backend.mediacrunchbackend.domain.controllers;
 
+import com.backend.mediacrunchbackend.domain.DTOs.RatingDTO;
+import com.backend.mediacrunchbackend.domain.DTOs.UserDTO;
 import com.backend.mediacrunchbackend.domain.models.Media;
+import com.backend.mediacrunchbackend.domain.models.Rating;
 import com.backend.mediacrunchbackend.domain.models.User;
 import com.backend.mediacrunchbackend.domain.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -26,8 +29,8 @@ public class UserController {
         return userService.create(user);
     }
     @GetMapping(value ="id/{id}")
-    public User getUserById(@PathVariable Long id) {
-        return userService.getById(id);
+    public UserDTO getUserById(@PathVariable Long id) {
+        return userService.convertUserToDTO(userService.getById(id)) ;
     }
     @GetMapping
     public List<User> getAllUsers() {
@@ -48,6 +51,17 @@ public class UserController {
             return new ResponseEntity<>(false,HttpStatus.NOT_FOUND);
         }
     }
+
+    @PutMapping(value= "{userId}/rate/{mediaId}/{rating}")
+    public ResponseEntity<UserDTO> rate(@PathVariable Long userId, @PathVariable Long mediaId, @PathVariable Double rating) {
+        UserDTO userDTO = userService.addRating(rating,userId,mediaId);
+        return ResponseEntity.ok(userDTO);
+
+
+
+    }
+
+
 
 
 }
