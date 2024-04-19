@@ -1,5 +1,6 @@
 package com.backend.mediacrunchbackend.domain.controllers;
 
+import com.backend.mediacrunchbackend.domain.DTOs.MediaDTO;
 import com.backend.mediacrunchbackend.domain.DTOs.RatingDTO;
 import com.backend.mediacrunchbackend.domain.DTOs.UserDTO;
 import com.backend.mediacrunchbackend.domain.models.Media;
@@ -38,7 +39,7 @@ public class UserController {
     }
 
     @GetMapping(value = "{id}/watchlist")
-    public List<Media> getAllFromWatchList(@PathVariable Long id) {
+    public List<MediaDTO> getAllFromWatchList(@PathVariable Long id) {
         return userService.getAllFromWatchlist(id);
     }
 

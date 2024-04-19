@@ -2,6 +2,7 @@ package com.backend.mediacrunchbackend.domain.services;
 
 import com.backend.mediacrunchbackend.domain.models.Genre;
 import com.backend.mediacrunchbackend.domain.models.Media;
+import com.backend.mediacrunchbackend.domain.models.MediaType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Date;
@@ -16,6 +17,7 @@ public interface MediaRepo extends JpaRepository<Media,Long> {
     Optional<Media> findByTitle(String title);
 
     List<Media> findByReleaseDate(Date date);
+    Optional<List<Media>> findByType(MediaType mediaType);
 
 
 }

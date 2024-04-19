@@ -22,6 +22,7 @@ public class Media implements Comparable<Media>{
     private Long id;
     private String title;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "media")
+    @JsonBackReference
     private List<Rating> ratings;
     @Temporal(TemporalType.DATE)
     private Date releaseDate;
@@ -59,9 +60,6 @@ public class Media implements Comparable<Media>{
     }
     @Override
     public int compareTo(Media otherMedia) {
-        // Compare the ratings of this media object with the ratings of the other media object
-        // Return a negative integer, zero, or a positive integer as this media object is less than, equal to, or greater than the specified object.
-        // Assuming ratings is a List<Double> and you want to sort based on the first rating
         return Double.compare(this.getAverage(), otherMedia.getAverage());
     }
 

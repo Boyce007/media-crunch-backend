@@ -1,10 +1,7 @@
 package com.backend.mediacrunchbackend.domain.services;
 
 import com.backend.mediacrunchbackend.domain.exceptions.ResourceNotFoundException;
-import com.backend.mediacrunchbackend.domain.models.Genre;
-import com.backend.mediacrunchbackend.domain.models.Media;
-import com.backend.mediacrunchbackend.domain.models.Rating;
-import com.backend.mediacrunchbackend.domain.models.User;
+import com.backend.mediacrunchbackend.domain.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -81,5 +78,16 @@ public class MediaService {
         return allMedia.subList(0,10);
 
     }
+
+    public List<Media> getByMediaType(String type) {
+        MediaType mediaType= MediaType.valueOf(type.toUpperCase());
+        Optional<List<Media>> media = mediaRepo.findByType(mediaType);
+        if(media.isEmpty()) {
+            throw new ResourceNotFoundException("Invalid Type");
+        }
+        return media.get();
+    }
+
+
 
 }

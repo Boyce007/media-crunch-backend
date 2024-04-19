@@ -44,9 +44,10 @@ public class UserService {
         return userRepo.findAll();
     }
 
-    public List<Media> getAllFromWatchlist(Long id) {
+    public List<MediaDTO> getAllFromWatchlist(Long id) {
         User user = getById(id);
-        return user.getWatchlist();
+        UserDTO userDTO = convertUserToDTO(user);
+        return userDTO.getWatchlist();
 
     }
 
@@ -69,7 +70,7 @@ public class UserService {
         return convertUserToDTO(user);
     }
 
-    private MediaDTO convertToDTO(Media media) {
+    private MediaDTO convertMediaToDTO(Media media) {
         MediaDTO mediaDTO = new MediaDTO();
         // Set MediaDTO properties from Media entity
         mediaDTO.setId(media.getId());
@@ -96,11 +97,15 @@ public class UserService {
         List<RatingDTO> ratingDTOs = user.getUserRatings().stream()
                 .map(this::convertRatingToDTO).toList();
         userDTO.setUserRatings(ratingDTOs);
-        List<MediaDTO> mediaDTOS = user.getWatchlist().stream().map(
-                this::convertToDTO).toList();
-        userDTO.setWatchlist(mediaDTOS);
+        userDTO.setWatchlist(convertWatchlistToDTO(user.getWatchlist()));
 
         return userDTO;
+    }
+
+    public List<MediaDTO> convertWatchlistToDTO(List<Media> media) {
+        List<MediaDTO> mediaDTOS = media.stream().map(
+                this::convertMediaToDTO).toList();
+        return mediaDTOS;
     }
 
 
