@@ -15,6 +15,6 @@ public class MediaDTO {
     private MediaType type;
     private String image;
     private Genre genre;
-    private List<RatingDTO> ratings;
+    private Double rating;
     // Other fields as needed
 }

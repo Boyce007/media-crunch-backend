@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.backend.mediacrunchbackend.domain.DTOs.DTOConverter.convertUserToDTO;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -21,17 +23,16 @@ public class UserController {
         this.userService = userService;
     }
     @PostMapping
-    public User createUser(@RequestBody User user) {
-//        try {
-//            return new ResponseEntity<>(userService.create(user),HttpStatus.OK);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(HttpStatus.CONFLICT);
-//        }
-        return userService.create(user);
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        try {
+            return new ResponseEntity<>(userService.create(user),HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
     @GetMapping(value ="id/{id}")
     public UserDTO getUserById(@PathVariable Long id) {
-        return userService.convertUserToDTO(userService.getById(id)) ;
+        return convertUserToDTO(userService.getById(id)) ;
     }
     @GetMapping
     public List<User> getAllUsers() {
@@ -59,7 +60,16 @@ public class UserController {
         return ResponseEntity.ok(userDTO);
 
 
+    }
 
+    @PutMapping(value = "{id}/update")
+    public ResponseEntity<Boolean> updateInfo(@PathVariable Long id,@RequestBody User user) {
+        try {
+            userService.updateUser(id, user);
+            return new ResponseEntity<>(true,HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(false,HttpStatus.CONFLICT);
+        }
     }
 
 

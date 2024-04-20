@@ -1,5 +1,6 @@
 package com.backend.mediacrunchbackend.domain.services;
 
+import com.backend.mediacrunchbackend.domain.DTOs.DTOConverter;
 import com.backend.mediacrunchbackend.domain.DTOs.MediaDTO;
 import com.backend.mediacrunchbackend.domain.DTOs.RatingDTO;
 import com.backend.mediacrunchbackend.domain.DTOs.UserDTO;
@@ -13,7 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+import static com.backend.mediacrunchbackend.domain.DTOs.DTOConverter.convertUserToDTO;
 
 @Service
 public class UserService {
@@ -28,7 +30,16 @@ public class UserService {
     }
 
     public User create(User user) {
+       checkEmail(user.getEmail());
       return userRepo.save(user);
+
+    }
+
+    private void checkEmail(String email) {
+        Optional<User> createdUser = userRepo.findByEmail(email);
+        if(createdUser.isPresent()) {
+            throw new ResourceCreationException("A user already exits with email " + email);
+        }
 
     }
 
@@ -46,7 +57,7 @@ public class UserService {
 
     public List<MediaDTO> getAllFromWatchlist(Long id) {
         User user = getById(id);
-        UserDTO userDTO = convertUserToDTO(user);
+        UserDTO userDTO =  convertUserToDTO(user);
         return userDTO.getWatchlist();
 
     }
@@ -64,49 +75,24 @@ public class UserService {
         User user = getById(userId);
         Media media = mediaService.getById(mediaId);
         Rating rating = new Rating(user,media,ratingValue);
+        ratingService.create(rating);
         mediaService.addRating(rating,media.getId());
         userRepo.save(user);
-
         return convertUserToDTO(user);
     }
 
-    private MediaDTO convertMediaToDTO(Media media) {
-        MediaDTO mediaDTO = new MediaDTO();
-        // Set MediaDTO properties from Media entity
-        mediaDTO.setId(media.getId());
-        mediaDTO.setTitle(media.getTitle());
-        mediaDTO.setReleaseDate(media.getReleaseDate());
-        mediaDTO.setType(media.getType());
-        mediaDTO.setGenre(media.getGenre());
-        mediaDTO.setImage(media.getImage());
-        return mediaDTO;
+    public User updateUser(Long id,User userInfo) {
+        User userToUpdate = getById(id);
+        checkEmail(userInfo.getEmail());
+        userToUpdate.setEmail(userInfo.getEmail());
+        userToUpdate.setFirstName(userInfo.getFirstName());
+        userToUpdate.setPassword(userInfo.getPassword());
+        return userRepo.save(userToUpdate);
     }
 
-    private RatingDTO convertRatingToDTO(Rating rating) {
-        RatingDTO ratingDTO = new RatingDTO();
-        ratingDTO.setId(rating.getId());
-        ratingDTO.setRating(rating.getRating());
-        return ratingDTO;
-    }
 
-    public UserDTO convertUserToDTO(User user) {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(user.getId());
-        userDTO.setFirstName(user.getFirstName());
-        userDTO.setLastName(user.getLastName());
-        List<RatingDTO> ratingDTOs = user.getUserRatings().stream()
-                .map(this::convertRatingToDTO).toList();
-        userDTO.setUserRatings(ratingDTOs);
-        userDTO.setWatchlist(convertWatchlistToDTO(user.getWatchlist()));
 
-        return userDTO;
-    }
 
-    public List<MediaDTO> convertWatchlistToDTO(List<Media> media) {
-        List<MediaDTO> mediaDTOS = media.stream().map(
-                this::convertMediaToDTO).toList();
-        return mediaDTOS;
-    }
 
 
 

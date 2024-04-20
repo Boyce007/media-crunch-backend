@@ -8,7 +8,7 @@ import java.util.List;
 
 public class DTOConverter {
 
-    private static MediaDTO convertMediaToDTO(Media media) {
+    public static MediaDTO convertMediaToDTO(Media media) {
         MediaDTO mediaDTO = new MediaDTO();
         mediaDTO.setId(media.getId());
         mediaDTO.setTitle(media.getTitle());
@@ -16,10 +16,11 @@ public class DTOConverter {
         mediaDTO.setType(media.getType());
         mediaDTO.setGenre(media.getGenre());
         mediaDTO.setImage(media.getImage());
+        mediaDTO.setRating(media.getAverage());
         return mediaDTO;
     }
 
-    private static RatingDTO convertRatingToDTO(Rating rating) {
+    public static RatingDTO convertRatingToDTO(Rating rating) {
         RatingDTO ratingDTO = new RatingDTO();
         ratingDTO.setId(rating.getId());
         ratingDTO.setRating(rating.getRating());
@@ -34,11 +35,11 @@ public class DTOConverter {
         List<RatingDTO> ratingDTOs = user.getUserRatings().stream()
                 .map(DTOConverter::convertRatingToDTO).toList();
         userDTO.setUserRatings(ratingDTOs);
-        userDTO.setWatchlist(convertWatchlistToDTO(user.getWatchlist()));
+        userDTO.setWatchlist(convertMediaListToDTO(user.getWatchlist()));
         return userDTO;
     }
 
-    public static List<MediaDTO> convertWatchlistToDTO(List<Media> media) {
+    public static List<MediaDTO> convertMediaListToDTO(List<Media> media) {
         return media.stream().map(
                 DTOConverter::convertMediaToDTO).toList();
     }

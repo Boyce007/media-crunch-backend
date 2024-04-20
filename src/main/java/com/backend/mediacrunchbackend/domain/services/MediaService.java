@@ -1,5 +1,7 @@
 package com.backend.mediacrunchbackend.domain.services;
 
+import com.backend.mediacrunchbackend.domain.DTOs.DTOConverter;
+import com.backend.mediacrunchbackend.domain.DTOs.MediaDTO;
 import com.backend.mediacrunchbackend.domain.exceptions.ResourceNotFoundException;
 import com.backend.mediacrunchbackend.domain.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,10 +53,11 @@ public class MediaService {
         return mediaRepo.findAll();
     }
 
-    public List<Media> getAllByGenre(String genreName) {
+    public List<MediaDTO> getAllByGenre(String genreName) {
         genreName = genreName.toUpperCase();
         Genre genre  = Genre.valueOf(genreName);
-        return mediaRepo.findByGenre(genre);
+        List<MediaDTO> media = DTOConverter.convertMediaListToDTO(mediaRepo.findByGenre(genre));
+        return media;
     }
 
     public Media getByTitle(String title) {

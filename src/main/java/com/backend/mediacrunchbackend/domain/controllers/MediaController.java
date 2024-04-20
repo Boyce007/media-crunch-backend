@@ -1,5 +1,7 @@
 package com.backend.mediacrunchbackend.domain.controllers;
 
+import com.backend.mediacrunchbackend.domain.DTOs.DTOConverter;
+import com.backend.mediacrunchbackend.domain.DTOs.MediaDTO;
 import com.backend.mediacrunchbackend.domain.models.Media;
 import com.backend.mediacrunchbackend.domain.models.Rating;
 import com.backend.mediacrunchbackend.domain.services.MediaService;
@@ -27,8 +29,8 @@ public class MediaController {
         return mediaService.create(media);
     }
     @GetMapping(value = "/id/{id}")
-    public Media getMediaById(@PathVariable Long id) {
-        return mediaService.getById(id);
+    public MediaDTO getMediaById(@PathVariable Long id) {
+        return DTOConverter.convertMediaToDTO(mediaService.getById(id)) ;
     }
 
 
@@ -40,14 +42,14 @@ public class MediaController {
     }
 
     @GetMapping
-    public List<Media> getAll() {
-        return mediaService.getAll();
+    public List<MediaDTO> getAll() {
+        return DTOConverter.convertMediaListToDTO(mediaService.getAll()) ;
     }
 
     @GetMapping(value ="/genre/{genre}")
-    public ResponseEntity<List<Media> > getALlByGenre(@PathVariable String genre) {
+    public ResponseEntity<List<MediaDTO> > getALlByGenre(@PathVariable String genre) {
         try {
-            List<Media> mediaByGenre = mediaService.getAllByGenre(genre);
+            List<MediaDTO> mediaByGenre = mediaService.getAllByGenre(genre);
             return new ResponseEntity<>(mediaByGenre,HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -62,6 +64,11 @@ public class MediaController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping(value = "/TopRated")
+    public List<MediaDTO> getTopRated() {
+        return DTOConverter.convertMediaListToDTO(mediaService.getTopRated());
     }
 
 }
