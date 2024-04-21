@@ -1,7 +1,9 @@
 package com.backend.mediacrunchbackend.domain.services;
 
 import com.backend.mediacrunchbackend.domain.exceptions.ResourceNotFoundException;
+import com.backend.mediacrunchbackend.domain.models.Media;
 import com.backend.mediacrunchbackend.domain.models.Rating;
+import com.backend.mediacrunchbackend.domain.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,4 +34,14 @@ public class RatingService {
        ratingRepo.delete(rating);
        return true;
     }
+
+    public Rating getUserRating(Media media, User user) {
+        Optional<Rating> rating = ratingRepo.findByMediaIdAndUserId(user,media);
+        if(rating.isEmpty()) {
+            throw new ResourceNotFoundException("No rating for media " + media.getId() + " from user " + user.getId());
+        }
+        return rating.get();
+    }
+
+
 }

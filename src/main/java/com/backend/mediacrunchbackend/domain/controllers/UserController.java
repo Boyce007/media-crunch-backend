@@ -30,7 +30,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
-    @GetMapping(value ="id/{id}")
+    @GetMapping(value ="user/{id}")
     public UserDTO getUserById(@PathVariable Long id) {
         return convertUserToDTO(userService.getById(id)) ;
     }
@@ -69,6 +69,15 @@ public class UserController {
             return new ResponseEntity<>(true,HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(false,HttpStatus.CONFLICT);
+        }
+    }
+
+    @GetMapping(value ="user/{userId}/userRating/{mediaId}")
+    public ResponseEntity<Double> getUserRating(@PathVariable Long userId,@PathVariable Long mediaId) {
+        try{
+            return new ResponseEntity<>(userService.getUserRating(userId,mediaId),HttpStatus.OK) ;
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 

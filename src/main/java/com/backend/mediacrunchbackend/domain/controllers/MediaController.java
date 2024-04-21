@@ -3,7 +3,6 @@ package com.backend.mediacrunchbackend.domain.controllers;
 import com.backend.mediacrunchbackend.domain.DTOs.DTOConverter;
 import com.backend.mediacrunchbackend.domain.DTOs.MediaDTO;
 import com.backend.mediacrunchbackend.domain.models.Media;
-import com.backend.mediacrunchbackend.domain.models.Rating;
 import com.backend.mediacrunchbackend.domain.services.MediaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -70,5 +69,6 @@ public class MediaController {
     public List<MediaDTO> getTopRated() {
         return DTOConverter.convertMediaListToDTO(mediaService.getTopRated());
     }
+
 
 }

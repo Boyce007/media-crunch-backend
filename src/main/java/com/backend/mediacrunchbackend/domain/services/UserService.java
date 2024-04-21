@@ -90,6 +90,14 @@ public class UserService {
         return userRepo.save(userToUpdate);
     }
 
+    public Double getUserRating(Long userId,Long mediaId) {
+        User user =  getById(userId);
+        Media media = mediaService.getById(mediaId);
+        Rating rating = ratingService.getUserRating(media,user);
+        return rating.getRating();
+    }
+
+
 
 
 
