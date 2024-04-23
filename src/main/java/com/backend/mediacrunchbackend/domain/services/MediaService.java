@@ -78,6 +78,7 @@ public class MediaService {
     public List<Media> getTopRated() {
         List<Media> allMedia = mediaRepo.findAll();
         Collections.sort(allMedia);
+        Integer end = Math.min(allMedia.size(),10);
         return allMedia.subList(0,10);
 
     }

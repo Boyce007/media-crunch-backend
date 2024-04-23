@@ -12,6 +12,7 @@ public class UserDTO {
     private String lastName;
     private List<RatingDTO> userRatings;
     private List<MediaDTO> watchlist;
+    private String password;
 
 
 

@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -28,13 +29,11 @@ public class Media implements Comparable<Media>{
     private Date releaseDate;
     @JsonProperty("type")
     private MediaType type;
+    @JsonProperty("image")
     private String image;
 
     @ManyToMany(mappedBy = "watchlist", cascade = CascadeType.ALL)
     private List<User> addedToWatchList;
-
-
-
     @JsonProperty("Genre")
     private Genre genre;
 
@@ -50,6 +49,16 @@ public class Media implements Comparable<Media>{
         ratings.add(rating);
     }
 
+    @PrePersist
+    protected void onCreate() {
+        if(ratings == null) {
+            ratings = new ArrayList<>();
+        }
+        if (addedToWatchList == null) {
+            addedToWatchList = new ArrayList<>();
+        }
+    }
+
     public Double getAverage() {
         Double avg = 0.0;
         for (Rating rating: getRatings()) {
@@ -58,6 +67,8 @@ public class Media implements Comparable<Media>{
 
         return avg/getRatings().size();
     }
+
+
     @Override
     public int compareTo(Media otherMedia) {
         return Double.compare(this.getAverage(), otherMedia.getAverage());

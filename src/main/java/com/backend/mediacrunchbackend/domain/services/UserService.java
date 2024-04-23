@@ -51,6 +51,14 @@ public class UserService {
         return user.get();
     }
 
+    public User getUserByEmail(String email) {
+        Optional<User> user =   userRepo.findByEmail(email);
+        if(user.isEmpty()) {
+            throw new ResourceNotFoundException("No user with email: "+email );
+        }
+        return user.get();
+    }
+
     public List<User> getAll() {
         return userRepo.findAll();
     }

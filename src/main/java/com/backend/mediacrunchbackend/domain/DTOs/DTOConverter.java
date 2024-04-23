@@ -30,8 +30,10 @@ public class DTOConverter {
     public static UserDTO convertUserToDTO(User user) {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
+        userDTO.setEmail(user.getEmail());
         userDTO.setFirstName(user.getFirstName());
         userDTO.setLastName(user.getLastName());
+        userDTO.setPassword(user.getPassword());
         List<RatingDTO> ratingDTOs = user.getUserRatings().stream()
                 .map(DTOConverter::convertRatingToDTO).toList();
         userDTO.setUserRatings(ratingDTOs);

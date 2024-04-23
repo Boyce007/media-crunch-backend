@@ -17,6 +17,7 @@ import static com.backend.mediacrunchbackend.domain.DTOs.DTOConverter.convertUse
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin("*")
 public class UserController {
     private UserService userService;
     public UserController(UserService userService) {
@@ -30,6 +31,26 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
+
+    @PostMapping(value="/login")
+    public ResponseEntity<UserDTO> login(@RequestBody User loginUser) {
+        User user = new User();
+        try {
+             user = userService.getUserByEmail(loginUser.getEmail());
+        } catch (Exception e ) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        if(user.getPassword().equals(loginUser.getPassword())) {
+            UserDTO userDTO = convertUserToDTO(user);
+            return new ResponseEntity<>(userDTO,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
+
+    }
+
+
     @GetMapping(value ="user/{id}")
     public UserDTO getUserById(@PathVariable Long id) {
         return convertUserToDTO(userService.getById(id)) ;
